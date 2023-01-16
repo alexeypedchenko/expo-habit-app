@@ -6,7 +6,7 @@ import {
   deleteHabit,
   editHabit,
   selectHabits
-} from '../store/reducers/main'
+} from '../store/reducer'
 
 const BASE_HABIT = {
   title: '',

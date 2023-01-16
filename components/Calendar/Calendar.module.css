@@ -1,0 +1,46 @@
+.buttonToday {
+  @apply h-6 text-sm px-2 rounded-sm flex items-center justify-center border border-violet-700 active:bg-violet-800;
+}
+.button {
+  @apply text-sm px-2 py-1 rounded active:bg-violet-800;
+}
+.buttonArrow {
+  @apply relative rounded w-6 h-6 border border-violet-800 active:bg-violet-800 transition-all;
+}
+.arrowLeft:before,
+.arrowRight:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+}
+.arrowLeft:before {
+  transform: translate(-25%, -50%) rotate(-45deg);
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+}
+.arrowRight:before {
+  transform: translate(-75%, -50%) rotate(135deg);
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+}
+.buttonDisabled {
+  @apply pointer-events-none opacity-50;
+}
+.weekend {
+  @apply text-red-600;
+}
+.today {
+  @apply text-[lime];
+}
+.date {
+  @apply relative h-10 rounded-sm items-center justify-center transition-all cursor-pointer;
+}
+.date span {
+  @apply absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[3px] text-xs;
+}
+.activeDay {
+  @apply bg-violet-700 text-white;
+}

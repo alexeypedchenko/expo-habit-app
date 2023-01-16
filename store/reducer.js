@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { PREW_DAY, TODAY } from '../../utils/date'
+import { PREW_DAY, TODAY } from '../utils/date'
 import {
   getCollection,
   updateDocument,
   setDocument,
   deleteDocument
-} from '../../firebase/firestore'
+} from '../firebase/firestore'
 
 export const fetchHabits = createAsyncThunk(
   'main/fetchHabits',
@@ -65,6 +65,9 @@ export const mainSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload
+    },
+    setActiveDay: (state, action) => {
+      state.activeDay = action.payload
     }
   },
   extraReducers: {
@@ -110,6 +113,6 @@ export const selectUser = (state) => state.user
 export const selectHabits = (state) => state.habits
 export const selectSettings = (state) => state.settings
 
-export const { setUser } = mainSlice.actions
+export const { setUser, setActiveDay } = mainSlice.actions
 
 export default mainSlice.reducer

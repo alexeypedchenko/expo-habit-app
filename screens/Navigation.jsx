@@ -9,12 +9,11 @@ import { auth } from '../firebaseConfig'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import Login from './Login'
-import Home from './Home'
 import Habit from './Habit'
-import Profile from './Profile'
+import BottomNavigation from './BottomNavigation'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectUser, setUser } from '../store/reducers/main'
+import { selectUser, setUser } from '../store/reducer'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -52,11 +51,11 @@ const Navigation = () => {
           {user ? (
             <>
               <Stack.Screen
-                name="home"
-                component={Home}
+                name="bottom-nav"
+                component={BottomNavigation}
                 options={{
-                  title: 'Simple Habits',
-                  headerBackVisible: false
+                  title: 'Simple Habits'
+                  // headerBackVisible: false
                 }}
               />
               <Stack.Screen
@@ -80,22 +79,3 @@ const Navigation = () => {
 }
 
 export default Navigation
-
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-// const Tab = createBottomTabNavigator()
-{
-  /* <Tab.Navigator
-  // initialRouteName="Feed"
-  screenOptions={{
-    tabBarActiveTintColor: '#e91e63'
-  }}
->
-  <Tab.Screen
-    name="profile"
-    component={Profile}
-    options={{
-      tabBarLabel: 'Profile'
-    }}
-  />
-</Tab.Navigator> */
-}

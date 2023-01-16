@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Button, Pressable, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,10 +9,12 @@ import {
   selectHabits,
   editHabit,
   selectLoad,
-  selectState
-} from '../store/reducers/main'
+  selectState,
+  setActiveDay
+} from '../store/reducer'
 
 import { getDocument } from '../firebase/firestore'
+import CalendarWeek from '../components/Calendar/CalendarWeek'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -23,6 +25,17 @@ const Home = ({ navigation }) => {
   const [data, setData] = useState(null)
 
   const [isEdit, setIsEdit] = useState(false)
+
+  const eventValues = useMemo(() => {
+    if (habits) {
+      return Array.from(
+        new Set(habits.map(([id, item]) => item.progress).flat())
+      )
+    }
+    return []
+  }, [habits])
+
+  console.log('eventValues:', eventValues)
 
   useEffect(() => {
     // getDocument([
@@ -66,7 +79,14 @@ const Home = ({ navigation }) => {
           <Text className="text-white">Edit</Text>
         </Pressable>
       </View>
-      <View className="relative w-full">
+
+      <CalendarWeek
+        activeDay={activeDay}
+        events={eventValues}
+        onSelectDay={(day) => dispatch(setActiveDay(day))}
+      />
+
+      <View className="relative w-full mt-8">
         {load && (
           <View className="absolute w-[50px] h-[50px] rounded-[100%] bg-black opacity-50 top-1/2 left-1/2 -mt-[29px] -ml-[25px]"></View>
         )}
@@ -92,7 +112,7 @@ const Home = ({ navigation }) => {
       </View>
 
       <Pressable
-        className="mt-auto w-full border p-4 rounded-xl mb-20"
+        className="mt-auto w-full border p-4 rounded-xl bg-white mb-4"
         onPress={() => navigation.navigate('habit')}
       >
         <Text className="text-center font-bold">Create new habit</Text>
