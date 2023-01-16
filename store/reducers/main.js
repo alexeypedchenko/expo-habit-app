@@ -62,7 +62,11 @@ export const mainSlice = createSlice({
     today: TODAY,
     activeDay: TODAY
   },
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload
+    }
+  },
   extraReducers: {
     [fetchHabits.pending]: (state, action) => {
       state.load = true
@@ -105,5 +109,7 @@ export const selectLoad = (state) => state.load
 export const selectUser = (state) => state.user
 export const selectHabits = (state) => state.habits
 export const selectSettings = (state) => state.settings
+
+export const { setUser } = mainSlice.actions
 
 export default mainSlice.reducer

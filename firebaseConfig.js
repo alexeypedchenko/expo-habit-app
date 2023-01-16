@@ -4,7 +4,12 @@ import { initializeApp } from 'firebase/app'
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import { getFirestore } from 'firebase/firestore'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -30,4 +35,13 @@ export const signInEmailPassword = ({ email, password }) =>
     .catch((error) => {
       const errorCode = error.code
       const errorMessage = error.message
+    })
+
+export const logout = () =>
+  signOut(auth)
+    .then(() => {
+      console.log('logout successful')
+    })
+    .catch((error) => {
+      console.log('logout error')
     })
