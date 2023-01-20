@@ -31,10 +31,13 @@ export const setDocument = async (path: string[], data) =>
 
 export const updateDocument = (path: string[], data) =>
   new Promise(async (res, rej) => {
+    console.log('path:', path)
+    console.log('data:', data)
     try {
       const isUpdate = await updateDoc(doc(db, ...path), data)
       res({ success: true, data })
     } catch (error) {
+      console.log('error:', error)
       res({
         success: false,
         error: 'error'

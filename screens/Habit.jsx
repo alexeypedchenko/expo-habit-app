@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Text, TextInput, View } from 'react-native'
+import { Button, Switch, Text, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   addHabit,
@@ -62,6 +62,13 @@ const Habit = ({ navigation, route }) => {
       })
   }
 
+  const onChange = (value, name) => {
+    setHabit((state) => ({
+      ...state,
+      [name]: value
+    }))
+  }
+
   return (
     <View className="flex-1 px-4">
       <Text className="font-bold text-xl text-center mb-6 mt-2">
@@ -69,16 +76,25 @@ const Habit = ({ navigation, route }) => {
       </Text>
       <TextInput
         className="p-4 border rounded mb-4"
-        onChangeText={(text) => {
-          setHabit((state) => ({ ...state, title: text }))
-        }}
+        onChangeText={(value) => onChange(value, 'title')}
         placeholder="Habit title"
         value={habit.title}
       />
 
+      <View className="flex flex-row items-center justify-between mb-4">
+        <Text>Active</Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={habit.active ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={(value) => onChange(value, 'active')}
+          value={habit.active}
+        />
+      </View>
+
       <Button title="Save" onPress={onSave} />
-      <Button title="Back" onPress={() => navigation.navigate('home')} />
       {id && <Button title="Delete" onPress={onDelete} />}
+      <Button title="Back" onPress={() => navigation.navigate('home')} />
     </View>
   )
 }

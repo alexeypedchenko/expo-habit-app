@@ -4,7 +4,8 @@ import {
   getCollection,
   updateDocument,
   setDocument,
-  deleteDocument
+  deleteDocument,
+  getDocument
 } from '../firebase/firestore'
 
 export const fetchHabits = createAsyncThunk(
@@ -14,11 +15,18 @@ export const fetchHabits = createAsyncThunk(
     return collection
   }
 )
+export const fetchUserData = createAsyncThunk(
+  'main/fetchUserData',
+  async (params, thunkAPI) => {
+    const collection = await getDocument(params)
+    return collection
+  }
+)
+
 export const editHabit = createAsyncThunk(
   'main/editHabit',
   async ({ path, data }, thunkAPI) => {
     const res = await updateDocument(path, data)
-    console.log('res:', res)
     if (res.success) {
       return {
         id: path[path.length - 1],
@@ -51,11 +59,27 @@ export const deleteHabit = createAsyncThunk(
   }
 )
 
+export const updateSettings = createAsyncThunk(
+  'main/updateSettings',
+  async ({ path, data }, thunkAPI) => {
+    const state = thunkAPI.getState()
+    const newData = {
+      ...state.userData,
+      settings: data
+    }
+    const res = await updateDocument(path, newData)
+    console.log('res:', res)
+    if (res.success) {
+      return newData
+    }
+  }
+)
+
 export const mainSlice = createSlice({
   name: 'main',
   initialState: {
     user: null,
-    settings: null,
+    userData: null,
     habits: [],
     load: false,
 
@@ -103,6 +127,14 @@ export const mainSlice = createSlice({
     [deleteHabit.fulfilled]: (state, action) => {
       const { id } = action.payload
       state.habits = state.habits.filter(([_id]) => _id !== id)
+    },
+
+    [fetchUserData.fulfilled]: (state, action) => {
+      state.userData = action.payload
+    },
+    [updateSettings.fulfilled]: (state, action) => {
+      console.log('action.payload:', action.payload)
+      state.userData = action.payload
     }
   }
 })
@@ -111,7 +143,7 @@ export const selectState = (state) => state
 export const selectLoad = (state) => state.load
 export const selectUser = (state) => state.user
 export const selectHabits = (state) => state.habits
-export const selectSettings = (state) => state.settings
+export const selectSettings = (state) => state.userData?.settings
 
 export const { setUser, setActiveDay } = mainSlice.actions
 

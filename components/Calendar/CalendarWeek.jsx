@@ -1,14 +1,8 @@
 import clsx from 'clsx'
 import React, { useState, useMemo } from 'react'
-import { Button, Pressable, Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { formatDate, TODAY, DAY } from '../../utils/date'
 import { DAYS_OF_WEEK, MONTHS } from './utils'
-
-// type Props = {
-//   activeDay?: string
-//   events?: string[]
-//   onSelectDay?: (day: string) => void
-// }
 
 const CalendarWeek = ({ activeDay, events, onSelectDay }) => {
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7]
@@ -21,6 +15,11 @@ const CalendarWeek = ({ activeDay, events, onSelectDay }) => {
   })
 
   const [activeWeek, setActiveWeek] = useState([...initWeek])
+
+  const isInitWeek = Object.is(
+    JSON.stringify(initWeek),
+    JSON.stringify(activeWeek)
+  )
 
   const weeks = useMemo(() => {
     const nextWeek = activeWeek.map((dayOfWeek, idx) => {
@@ -45,6 +44,7 @@ const CalendarWeek = ({ activeDay, events, onSelectDay }) => {
   }, [activeWeek])
 
   const next = () => {
+    if (isInitWeek) return
     setActiveWeek(weeks.next)
   }
   const prev = () => {
@@ -55,7 +55,7 @@ const CalendarWeek = ({ activeDay, events, onSelectDay }) => {
   }
 
   return (
-    <View>
+    <View className="mb-4">
       <View className="mb-2 flex flex-row justify-between items-center">
         <Pressable
           // className={styles.buttonToday}
@@ -76,6 +76,7 @@ const CalendarWeek = ({ activeDay, events, onSelectDay }) => {
           </Pressable>
           <Pressable
             // className={clsx(styles.buttonArrow, styles.arrowRight)}
+            className={isInitWeek ? 'opacity-40' : ''}
             onPress={next}
           >
             <Text>next</Text>

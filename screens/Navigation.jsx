@@ -27,28 +27,28 @@ const Navigation = () => {
   const [appIsReady, setAppIsReady] = useState(true)
 
   useEffect(() => {
-    const authStateUnsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const { uid, email } = user
-        dispatch(setUser({ uid, email }))
-      } else {
-        dispatch(setUser(null))
-      }
-    })
+    // const authStateUnsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     // https://firebase.google.com/docs/reference/js/firebase.User
+    //     const { uid, email } = user
+    //     dispatch(setUser({ uid, email }))
+    //   } else {
+    //     dispatch(setUser(null))
+    //   }
+    // })
 
     SplashScreen.hideAsync()
 
-    return () => {
-      authStateUnsubscribe()
-    }
+    // return () => {
+    //   authStateUnsubscribe()
+    // }
   }, [])
 
   return (
     <NavigationContainer>
       <>
         <Stack.Navigator initialRouteName="login">
-          {user ? (
+          {user || true ? (
             <>
               <Stack.Screen
                 name="bottom-nav"
